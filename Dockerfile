@@ -19,8 +19,7 @@ COPY go.mod go.sum ./
 # Download Go modules and dependencies
 RUN go mod download
 
-# Copy the entire project to the /go/src/bland directory
-COPY . .
+
 
 # Manually copy files from Swagger to the correct GOPATH locations
 COPY ./Swagger/controller /go/src/bland/controller
