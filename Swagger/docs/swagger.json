@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "0.0.0.0:8080",
+    "host": "localhost:8080  // This should be \"localhost\" instead of \"0.0.0.0\"",
     "basePath": "/api/v1",
     "paths": {
         "/call": {
