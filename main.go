@@ -21,7 +21,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      0.0.0.0:8080
 // @BasePath  /api/v1
 
 // @securityDefinitions.apikey bearerToken
@@ -55,5 +55,5 @@ func main() {
     }
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.Run(":8080")
+	r.Run(":0.0.0.0:8080")
 }
