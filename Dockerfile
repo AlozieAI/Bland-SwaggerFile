@@ -24,7 +24,7 @@ RUN go mod download
 # Manually copy files from Swagger to the correct GOPATH locations
 COPY ./Swagger/controller /go/src/bland/controller
 COPY ./Swagger/docs /go/src/bland/docs
-COPY ./Swagger/docs /go/src/bland/model
+COPY ./Swagger/model /go/src/bland/model
 COPY main.go /go/src/bland/main.go
 
 # Build the Go application
