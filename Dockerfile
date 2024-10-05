@@ -22,12 +22,13 @@ RUN go mod download
 # Copy the entire project to the /go/src/bland directory
 COPY . .
 
-# Manually copy files to the correct GOPATH locations
-COPY ./controller /go/src/bland/controller
-COPY ./docs /go/src/bland/docs
+# Manually copy files from Swagger to the correct GOPATH locations
+COPY ./Swagger/controller /go/src/bland/controller
+COPY ./Swagger/docs /go/src/bland/docs
 
 # Build the Go application
 RUN go build -o /go/bin/app ./main.go
 
 # Set the entry point command to run the Go app
 CMD ["/go/bin/app"]
+
