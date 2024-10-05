@@ -10,17 +10,24 @@ ENV GOPROXY=direct
 ENV GOPATH=/go
 ENV GOMODCACHE=/go/pkg/mod
 
-# Copy go.mod and go.sum to the root of the container
+# Create directory structure and set the working directory to /go/src/bland
+WORKDIR /go/src/bland
+
+# Copy go.mod and go.sum to the working directory
 COPY go.mod go.sum ./
 
 # Download Go modules and dependencies
 RUN go mod download
 
-# Copy the entire project to the root of the container
+# Copy the entire project to the /go/src/bland directory
 COPY . .
 
+# Manually copy files to the correct GOPATH locations
+COPY ./controller /go/src/bland/controller
+COPY ./docs /go/src/bland/docs
+
 # Build the Go application
-RUN go build -o app ./main.go
+RUN go build -o /go/bin/app ./main.go
 
 # Set the entry point command to run the Go app
-CMD ["./app"]
+CMD ["/go/bin/app"]
