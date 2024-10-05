@@ -25,6 +25,7 @@ COPY . .
 # Manually copy files from Swagger to the correct GOPATH locations
 COPY ./Swagger/controller /go/src/bland/controller
 COPY ./Swagger/docs /go/src/bland/docs
+COPY ./Swagger/docs /go/src/bland/model
 
 # Build the Go application
 RUN go build -o /go/bin/app ./main.go
