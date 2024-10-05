@@ -1,0 +1,1202 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server celler server.",
+        "title": "Swagger Example API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/call": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Send call using Pathways by providing a phone number and pathway ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SendCall"
+                ],
+                "summary": "Send call using Pathways",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SendCall"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.CallResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Bearer token required",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/call/{call_id}/analyze": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Analyze a call by providing the call ID, goal, and an array of questions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AnalyzeCall"
+                ],
+                "summary": "Analyze a call with AI",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Call ID",
+                        "name": "call_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AnalyzeCallRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.AnalyzeCallResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Bearer token required",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/calls/{call_id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Retrieve detailed information, metadata, and transcripts for a call",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CallDetails"
+                ],
+                "summary": "Get call details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Call ID",
+                        "name": "call_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Call details retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.CallDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/convo_pathway/{pathway_id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Returns detailed information about a specific pathway, including nodes and edges.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pathway"
+                ],
+                "summary": "Get pathway information",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The pathway ID",
+                        "name": "pathway_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pathway information retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetPathwayResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/delete/convo_pathway/{pathway_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Deletes a specific conversational pathway by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pathway"
+                ],
+                "summary": "Delete a conversational pathway",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pathway ID to delete",
+                        "name": "pathway_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pathway deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.DeletePathwayResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/folders": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Creates a new folder for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Folder"
+                ],
+                "summary": "Create a new folder",
+                "parameters": [
+                    {
+                        "description": "Request body for creating folder",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateFolderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Folder created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateFolderResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pathway/update/{pathway_id}": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Updates a conversational pathway’s fields including name, description, nodes, and edges",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pathway"
+                ],
+                "summary": "Update conversational pathway",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pathway ID to update",
+                        "name": "pathway_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body for updating the pathway",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdatePathwayRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pathway updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.PathwayData"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pathways/chat/create": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Creates a chat instance for a pathway, which can be used to send and receive messages.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Create a pathway chat",
+                "parameters": [
+                    {
+                        "description": "Request body for creating chat",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chat instance created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateChatResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pathways/chat/{chat_id}/send": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Sends a message to a specific pathway chat and receives a response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send a message to a pathway chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Chat ID to send message to",
+                        "name": "chat_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body for sending a message",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SendMessageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Message sent successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.SendMessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Bearer token required",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pathways/create-and-move": {
+            "post": {
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ],
+                "description": "Creates a new conversational pathway and moves it to a folder",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pathway"
+                ],
+                "summary": "Create and move pathway",
+                "parameters": [
+                    {
+                        "description": "Request body for creating pathway",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreatePathwayRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Folder ID to move the pathway into",
+                        "name": "folder_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Combined response of creating and moving pathway",
+                        "schema": {
+                            "$ref": "#/definitions/model.CombinedResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.AnalyzeCallRequest": {
+            "type": "object",
+            "required": [
+                "goal",
+                "questions"
+            ],
+            "properties": {
+                "goal": {
+                    "type": "string"
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "model.AnalyzeCallResponse": {
+            "type": "object",
+            "properties": {
+                "answers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "credits_used": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CallDetail": {
+            "type": "object",
+            "properties": {
+                "analysis": {
+                    "type": "string",
+                    "example": "Detailed analysis of the call..."
+                },
+                "analysis_schema": {
+                    "type": "string",
+                    "example": "analysis-schema-123"
+                },
+                "answered_by": {
+                    "type": "string",
+                    "example": "human"
+                },
+                "batch_id": {
+                    "type": "string",
+                    "example": "batch123"
+                },
+                "call_ended_by": {
+                    "type": "string",
+                    "example": "customer"
+                },
+                "call_id": {
+                    "type": "string",
+                    "example": "f0300301-b066-47a0-83ce-895cb1b63a9a"
+                },
+                "call_length": {
+                    "type": "number",
+                    "example": 120.5
+                },
+                "completed": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "concatenated_transcript": {
+                    "type": "string",
+                    "example": "Full transcript of the call..."
+                },
+                "corrected_duration": {
+                    "type": "string",
+                    "example": "2m 30s"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-09-26T12:34:56Z"
+                },
+                "end_at": {
+                    "type": "string",
+                    "example": "2024-09-26T12:36:56Z"
+                },
+                "endpoint_url": {
+                    "type": "string",
+                    "example": "https://api.bland.ai/callback"
+                },
+                "error_message": {
+                    "type": "string",
+                    "example": "Call failed due to timeout"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "+14155552672"
+                },
+                "inbound": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "local_dialing": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "max_duration": {
+                    "type": "number",
+                    "example": 3600
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        " \"region\"": "\"US\"}",
+                        "{\"source\"": "\"ads\""
+                    }
+                },
+                "pathway_logs": {
+                    "type": "string",
+                    "example": "Log details here..."
+                },
+                "price": {
+                    "type": "number",
+                    "example": 0.05
+                },
+                "queue_status": {
+                    "type": "string",
+                    "example": "completed"
+                },
+                "record": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "recording_url": {
+                    "type": "string",
+                    "example": "https://api.bland.ai/recordings/12345"
+                },
+                "request_data": {
+                    "$ref": "#/definitions/model.RequestData"
+                },
+                "started_at": {
+                    "type": "string",
+                    "example": "2024-09-26T12:34:56Z"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "completed"
+                },
+                "summary": {
+                    "type": "string",
+                    "example": "Call summary notes..."
+                },
+                "to": {
+                    "type": "string",
+                    "example": "+14155552671"
+                },
+                "transcripts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Transcript"
+                    }
+                },
+                "variables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        " \"campaign\"": "\"welcome\"}",
+                        "{\"user_id\"": "\"12345\""
+                    }
+                }
+            }
+        },
+        "model.CallResponse": {
+            "type": "object",
+            "properties": {
+                "call_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ChatHistoryEntry": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "The message content",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "\"user\" or \"assistant\"",
+                    "type": "string"
+                }
+            }
+        },
+        "model.CombinedResponse": {
+            "type": "object",
+            "properties": {
+                "new_folder_id": {
+                    "description": "This is the field you want, not FolderID",
+                    "type": "string"
+                },
+                "old_folder_id": {
+                    "type": "string"
+                },
+                "pathway_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateChatRequest": {
+            "type": "object",
+            "required": [
+                "pathway_id",
+                "start_node_id"
+            ],
+            "properties": {
+                "pathway_id": {
+                    "type": "string"
+                },
+                "start_node_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateChatResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.CreateChatResponseData"
+                },
+                "errors": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateChatResponseData": {
+            "type": "object",
+            "properties": {
+                "chat_id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateFolderData": {
+            "type": "object",
+            "properties": {
+                "folder_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_folder_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateFolderRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "parent_folder_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateFolderResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.CreateFolderData"
+                },
+                "errors": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreatePathwayRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DeletePathwayResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Message providing details (e.g., \"Pathway deleted successfully\")",
+                    "type": "string"
+                },
+                "pathway_id": {
+                    "description": "The ID of the pathway being used",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Status of the operation (success or error)",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Edge": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.GetPathwayResponse": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "edges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Edge"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Node"
+                    }
+                },
+                "production_version_number": {
+                    "type": "string"
+                },
+                "published_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ModelOptions": {
+            "type": "object",
+            "properties": {
+                "block_interruptions": {
+                    "type": "boolean"
+                },
+                "modelType": {
+                    "type": "string"
+                },
+                "skipUserResponse": {
+                    "type": "boolean"
+                },
+                "temperature": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.Node": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.NodeData"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.NodeData": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "condition": {
+                    "type": "string"
+                },
+                "globalDescription": {
+                    "type": "string"
+                },
+                "globalLabel": {
+                    "type": "string"
+                },
+                "globalPrompt": {
+                    "type": "string"
+                },
+                "isGlobal": {
+                    "type": "boolean"
+                },
+                "isStart": {
+                    "type": "boolean"
+                },
+                "modelOptions": {
+                    "$ref": "#/definitions/model.ModelOptions"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "prompt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PathwayData": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "edges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Edge"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Node"
+                    }
+                }
+            }
+        },
+        "model.RequestData": {
+            "type": "object",
+            "properties": {
+                "language": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "wait": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "model.SendCall": {
+            "type": "object",
+            "required": [
+                "pathway_id",
+                "phone_number"
+            ],
+            "properties": {
+                "pathway_id": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SendMessageRequest": {
+            "type": "object",
+            "required": [
+                "message"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SendMessageResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "The main data of the response",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.SendMessageResponseData"
+                        }
+                    ]
+                },
+                "errors": {
+                    "description": "Any errors encountered during the request (optional)",
+                    "type": "string"
+                }
+            }
+        },
+        "model.SendMessageResponseData": {
+            "type": "object",
+            "properties": {
+                "assistant_response": {
+                    "description": "The assistant's latest response",
+                    "type": "string"
+                },
+                "chat_history": {
+                    "description": "Full history of the conversation",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ChatHistoryEntry"
+                    }
+                },
+                "chat_id": {
+                    "description": "ID of the chat session",
+                    "type": "string"
+                },
+                "current_node_id": {
+                    "description": "The current node ID in the conversation pathway",
+                    "type": "string"
+                },
+                "current_node_name": {
+                    "description": "The current node name",
+                    "type": "string"
+                },
+                "pathway_id": {
+                    "description": "The ID of the pathway being used",
+                    "type": "string"
+                },
+                "variables": {
+                    "description": "Key-value pairs for any dynamic variables used in the conversation",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "model.Transcript": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UpdatePathwayRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "x-order": "1"
+                },
+                "description": {
+                    "type": "string",
+                    "x-order": "2"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Node"
+                    },
+                    "x-order": "3"
+                },
+                "edges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Edge"
+                    },
+                    "x-order": "4"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "bearerToken": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "externalDocs": {
+        "description": "OpenAPI",
+        "url": "https://swagger.io/resources/open-api/"
+    }
+}
