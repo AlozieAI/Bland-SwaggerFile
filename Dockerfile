@@ -3,6 +3,9 @@ FROM golang:1.23-alpine
 
 # Set Go environment variables
 ENV GO111MODULE=on
+ENV GOPROXY=direct
+ENV GOPATH=/go
+ENV GOMODCACHE=/go/pkg/mod
 
 # Copy go.mod and go.sum to the root of the container
 COPY go.mod go.sum ./
@@ -13,8 +16,8 @@ RUN go mod download
 # Copy the entire project to the root of the container
 COPY . .
 
-# Build the Go application using the existing structure
-RUN go build -o main.go
+# Build the Go application, explicitly specifying the module path
+RUN go build -o app ./main.go
 
 # Set the entry point command to run the Go app
 CMD ["./app"]
