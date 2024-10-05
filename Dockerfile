@@ -18,4 +18,3 @@ RUN go build -o app ./main.go
 
 # Set the entry point command to run the Go app
 CMD ["./app"]
-
