@@ -25,6 +25,7 @@ RUN go mod download
 COPY ./Swagger/controller /go/src/bland/controller
 COPY ./Swagger/docs /go/src/bland/docs
 COPY ./Swagger/docs /go/src/bland/model
+COPY ./Swagger/docs /go/src/bland/main.go
 
 # Build the Go application
 RUN go build -o /go/bin/app ./main.go
