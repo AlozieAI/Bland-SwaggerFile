@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application using the existing structure
-RUN go build -o app ./main.go
+RUN go build -o main.go
 
 # Set the entry point command to run the Go app
 CMD ["./app"]
